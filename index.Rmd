@@ -27,7 +27,7 @@ clean_data <- x %>%
   summarize(total = n())
 
 clean_data %>% 
-  ggplot(aes(x=month, y = total, fill = month))+
+  ggplot(aes(x=month, y = total, fill = as.numeric(month)))+
   geom_col()+
   theme_classic()+
   labs(title = "Number of of EU Soccer Player's Birthdays in each Month", subtitle = "There are more professional soccer players born in the early parts of the year.", x = "Month", y = "Number of Players", caption = "Source: Wikipedia", fill="Month")
