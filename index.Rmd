@@ -7,7 +7,7 @@ site: distill::distill_website
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-
+library(tidyverse)
 # Learn more about creating websites with Distill at:
 # https://rstudio.github.io/distill/website.html
 
@@ -15,4 +15,23 @@ knitr::opts_chunk$set(echo = FALSE)
 # https://rstudio.github.io/distill/publish_website.html#github-pages
 
 ```
+
+```{r}
+x <- read_csv("birthdates.csv", col_types = cols(value = col_character()))
+
+clean_data <- x %>% 
+  mutate(date = parse_date(str_sub(value, 2, 11))) %>% 
+  mutate(raw_month = months(date)) %>% 
+  mutate(month = parse_factor(raw_month, levels = month.name)) %>% 
+  group_by(month) %>% 
+  summarize(total = n())
+
+clean_data %>% 
+  ggplot(aes(x=month, y = total, fill = month))+
+  geom_col()+
+  theme_classic()+
+  labs(title = "Number of of EU Soccer Player's Birthdays in each Month", subtitle = "There are more professional soccer players born in the early parts of the year.", x = "Month", y = "Number of Players", caption = "Source: Wikipedia", fill="Month")
+ 
+```
+
 
